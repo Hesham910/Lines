@@ -222,3 +222,8 @@ input[aria-invalid='true'] { border-color:var(--danger); }
 .button.ghost { background:transparent; border:1px solid var(--line-hi); color:var(--text); box-shadow:none; }
 .button.ghost:hover { border-color:var(--accent-line); color:var(--accent); }
 
+/* منع الحركة الأفقية تماماً على مستوى الموقع بالكامل */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
