@@ -231,9 +231,11 @@ input[aria-invalid='true'] { border-color:var(--danger); }
 }
 
 
-/* رفع محتوى الهيرو (العناوين والأزرار) 50 بكسل للأعلى */
-.hero-copy,
-.hero-content,
-.hero-text {
-  transform: translateY(-45px) !important;
+/* يتم تطبيق الإزاحة للأعلى فقط على شاشات الديسكتوب (أكبر من 768 بكسل أو 1024 بكسل) */
+@media (min-width: 768px) {
+  .hero-copy,
+  .hero-content,
+  .hero-text {
+    transform: translateY(-45px) !important;
+  }
 }
