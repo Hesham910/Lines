@@ -14,7 +14,7 @@ export const audienceNames: Record<Audience, LocalText> = {
   rider: ['Rider', 'Fahrgast', 'Passager'], driver: ['Driver', 'Fahrer', 'Chauffeur'], partner: ['Partner', 'Partner', 'Partenaire'],
 };
 export const audienceActions: Record<Audience, LocalText> = {
-  rider: ['I want to ride', 'Ich möchte mitfahren', 'Je veux un trajet'], driver: ['I want to drive', 'Ich möchte fahren', 'Je veux conduire'], partner: ['I host guests', 'Ich betreue Gäste', 'Je reçois des clients'],
+  rider: ['Rider', 'Fahrgast', 'Passager'], driver: ['Driver', 'Fahrer', 'Chauffeur'], partner: ['Partner', 'Partner', 'Partenaire'],
 };
 export const waitlistLabels: Record<Audience, LocalText> = {
   rider: ['Join the rider waitlist', 'Auf die Fahrgast-Warteliste', 'Rejoindre la liste passagers'],

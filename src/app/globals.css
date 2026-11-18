@@ -93,7 +93,7 @@ svg { flex-shrink:0; vertical-align:middle; }
 .footer-bottom span,.footer-bottom button { display:flex; align-items:center; gap:6px; }
 .footer-bottom button,.footer-bottom a { min-height:34px; align-content:center; }
 .footer-bottom .back-top { width:34px; height:34px; border-color:var(--line); }
-.mobile-dock { position:fixed; z-index:32; bottom:max(8px,env(safe-area-inset-bottom)); inset-inline:9px; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:4px; background:var(--head); backdrop-filter:blur(16px); padding:5px; border:1px solid var(--line-hi); border-radius:13px; box-shadow:var(--shadow); }
+.mobile-dock { display:none; position:fixed; z-index:32; bottom:max(8px,env(safe-area-inset-bottom)); inset-inline:9px; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:4px; background:var(--head); backdrop-filter:blur(16px); padding:5px; border:1px solid var(--line-hi); border-radius:13px; box-shadow:var(--shadow); }
 .mobile-dock[data-cookies='true'] { display:none; }
 .mobile-dock>a,.mobile-dock>button { min-height:47px; display:flex; align-items:center; justify-content:center; gap:4px; font-weight:800; font-size:.7rem; line-height:1.15; border-radius:8px; color:var(--text); }
 .mobile-dock>button { background:var(--brand); color:#001307; }
@@ -122,6 +122,7 @@ svg { flex-shrink:0; vertical-align:middle; }
 .dialog-brand .brand-art { width:90px; }
 .dialog-privacy { display:flex; gap:6px; align-items:center; justify-content:center; width:fit-content; color:var(--soft); font-size:.74rem; margin:16px auto 0; text-decoration:underline; text-underline-offset:3px; }
 .language-list,.preference-list,.menu-list { display:grid; gap:7px; margin-bottom:13px; }
+.menu-list + .button.primary { width:100%; }
 .language-list button,.menu-list a,.preference-list>* { min-height:48px; display:flex; align-items:center; gap:11px; padding:9px 12px; border:1px solid var(--line); border-radius:9px; background:var(--panel-lo); font-weight:700; font-size:.89rem; }
 .language-list button .mono,.menu-list .mono { color:var(--soft); font-size:.73rem; }
 .language-list button[aria-pressed='true'],.language-list button:hover,.menu-list a:hover { background:var(--accent-wash); border-color:var(--accent-line); }
