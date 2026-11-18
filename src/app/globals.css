@@ -239,3 +239,10 @@ input[aria-invalid='true'] { border-color:var(--danger); }
     transform: translateY(-45px) !important;
   }
 }
+
+/* إضافة مسافة علوية لحاوية الشاشتين في الموبايل فقط عشان تفصل بينها وبين الأزرار والمحتوى */
+@media (max-width: 768px) {
+  .hero-visual {
+    margin-top: 35px !important; /* تقدر تزود أو تقلل القيمة دي (مثلاً 30px أو 40px) حسب اللي تشوفه مناسب للشكل */
+  }
+}
