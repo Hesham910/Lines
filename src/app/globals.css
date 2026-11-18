@@ -246,3 +246,9 @@ input[aria-invalid='true'] { border-color:var(--danger); }
     margin-top: 35px !important; /* تقدر تزود أو تقلل القيمة دي (مثلاً 30px أو 40px) حسب اللي تشوفه مناسب للشكل */
   }
 }
+
+/* منع ظهور أي أسكرول أفقي نهائياً في الصفحة وتحجيم العناصر المسببة للمشكلة */
+html, body {
+  overflow-x: hidden !important;
+  max-width: 100vw !important;
+}
