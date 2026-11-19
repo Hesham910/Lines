@@ -48,9 +48,9 @@ export function SiteShell({ locale, children }: { locale: Locale; children: Reac
   const [consent,setConsent] = useState<Choices | null>(null);
   const [cookieReady,setCookieReady] = useState(false);
   const [condensed,setCondensed] = useState(false);
-  const [sticky,setSticky] = useState(false);
+  const [navHidden,setNavHidden] = useState(false);
+  const navScroll = useRef({ last: 0, timer: 0 });
   const [langOpen,setLangOpen] = useState(false);
-  const [ctaVisible,setCtaVisible] = useState(false);
   const [activeSection,setActiveSection] = useState('');
   const focusReturn = useRef<HTMLElement | null>(null);
   const sectionPercent = useRef(0);
@@ -143,9 +143,12 @@ export function SiteShell({ locale, children }: { locale: Locale; children: Reac
       const distance = document.documentElement.scrollHeight - window.innerHeight;
       const percent = distance > 0 ? Math.min(100,Math.round(100 * y / distance)) : 0;
       sectionPercent.current = percent;
-      if (!final) setCtaVisible(false);
       setCondensed(y > 34);
-      setSticky(percent >= 15);
+      if (y < 90 || y - navScroll.current.last <= -2) setNavHidden(false);
+      else if (y - navScroll.current.last > 2) setNavHidden(true);
+      if (navScroll.current.timer) window.clearTimeout(navScroll.current.timer);
+      navScroll.current.timer = window.setTimeout(() => setNavHidden(false), 300);
+      navScroll.current.last = y;
       if (isHome) {
         const section = ['partners','drive','ride'].find((id) => { const rect = document.getElementById(id)?.getBoundingClientRect(); return rect && rect.top < 205 && rect.bottom > 205; });
         setActiveSection(section ?? '');
@@ -157,8 +160,7 @@ export function SiteShell({ locale, children }: { locale: Locale; children: Reac
     const onScroll = () => { if (!frame) frame = requestAnimationFrame(measure); };
     const final = document.getElementById('final-cta');
     const observer = new IntersectionObserver((entries) => { for (const entry of entries) {
-      if (entry.target === final) setCtaVisible(entry.isIntersecting);
-      else if (entry.isIntersecting && consentEnabled && !seenSections.current.has(entry.target.id)) {
+      if (entry.isIntersecting && consentEnabled && !seenSections.current.has(entry.target.id)) {
         seenSections.current.add(entry.target.id);
         track('section_view',{ section:entry.target.id, language:locale });
       }
@@ -168,7 +170,7 @@ export function SiteShell({ locale, children }: { locale: Locale; children: Reac
     window.addEventListener('scroll',onScroll,{passive:true});
     window.addEventListener('resize',onScroll,{passive:true});
     onScroll();
-    return () => { cancelAnimationFrame(frame); observer.disconnect(); window.removeEventListener('scroll',onScroll); window.removeEventListener('resize',onScroll); };
+    return () => { window.clearTimeout(navScroll.current.timer); cancelAnimationFrame(frame); observer.disconnect(); window.removeEventListener('scroll',onScroll); window.removeEventListener('resize',onScroll); };
   }, [locale,pathname,isHome,consentEnabled]);
 
   useEffect(() => {
@@ -205,20 +207,18 @@ export function SiteShell({ locale, children }: { locale: Locale; children: Reac
     return () => { document.removeEventListener('pointerdown',close); document.removeEventListener('keydown',esc); };
   },[langOpen]);
   const isSheet = shown?.kind==='menu';
-  const noSticky = pathname.includes('waitlist-') || pathname.includes('/legal/');
   const hasBanner = cookieReady && !consent && !pathname.includes('waitlist-unsubscribe');
 
   return <SiteContext.Provider value={api}><MotionFeatures>
     <a className="skip-link" href="#main">{tr(locale,['Skip to content','Zum Inhalt springen','Aller au contenu'])}</a>
     {!barHidden && <div className="launch-bar"><div className="container launch-inner"><span className="launch-dot" aria-hidden="true" /><span>{tr(locale,live ? ['Lines is live across Switzerland.','Lines ist in der ganzen Schweiz live.','Lines est disponible dans toute la Suisse.'] : ['Lines is launching across Switzerland.','Lines startet in der ganzen Schweiz.','Lines arrive dans toute la Suisse.'])}</span><button type="button" className="launch-link" onClick={() => openWaitlist('rider','announcement')}>{tr(locale,live ? ['Download now','Jetzt laden','Télécharger'] : ['Get launch access','Zum Start vormerken','Me prévenir du lancement'])}<ArrowUpRight size={13} aria-hidden="true" /></button><button type="button" className="icon-button launch-close" onClick={dismissBar} aria-label={tr(locale,['Dismiss announcement','Hinweis schliessen','Masquer l’annonce'])}><X size={15} aria-hidden="true" /></button></div></div>}
-    <header className={`site-header ${condensed ? 'condensed' : ''}`}><div className="container nav-inner">
+    <header className={`site-header ${condensed ? 'condensed' : ''} ${navHidden ? 'nav-hidden' : ''}`}><div className="container nav-inner">
       <Brand locale={locale} />
       <nav className="desktop-nav" aria-label={tr(locale,['Main navigation','Hauptnavigation','Navigation principale'])}>{nav.map((item) => <Link key={item.key} href={linkTarget(item)} className={linkActive(item) ? 'active' : undefined} aria-current={linkActive(item) ? isHome ? 'location' : 'page' : undefined}>{tr(locale,item.label)}</Link>)}</nav>
       <div className="nav-actions"><div className="lang-wrap"><button type="button" className="language-button" onClick={() => setLangOpen((value) => !value)} aria-expanded={langOpen} aria-haspopup="menu" aria-label={tr(locale,languageLabel)}><Globe2 size={17} aria-hidden="true" /><span>{locale.toUpperCase()}</span><ChevronDown className={`language-chevron ${langOpen ? 'open' : ''}`} size={12} aria-hidden="true" /></button>{langOpen && <div className="lang-menu" role="menu">{locales.map((value) => <button key={value} type="button" role="menuitemradio" lang={value} aria-checked={value===locale} onClick={() => switchLocale(value)}><span className="mono">{value.toUpperCase()}</span>{languageNames[value]}{value===locale && <Check size={17} aria-hidden="true" />}</button>)}</div>}</div><div className="header-cta-slot">{live ? <><StoreButtons intent="rider" compact/><Link className="button primary header-cta" href={href(locale,'driver')}>{tr(locale,['Drive with Lines','Mit Lines fahren','Conduire avec Lines'])}</Link></> : <WaitlistButton className="button primary header-cta" source="header" arrow={false}>{tr(locale,joinLabel)}</WaitlistButton>}</div><button type="button" className="icon-button menu-trigger" aria-label={tr(locale,['Open menu','Menü öffnen','Ouvrir le menu'])} onClick={() => open({kind:'menu'})}><Menu size={23} aria-hidden="true" /></button></div>
     </div></header>
     {children}
     <Footer locale={locale} onCookies={() => open({kind:'cookies'})} />
-    {sticky && !ctaVisible && !opened && !noSticky && <div className="mobile-dock" data-cookies={hasBanner}><button type="button" onClick={() => openWaitlist(pathname.endsWith('/driver') ? 'driver' : 'rider','mobile_dock')}><Bell size={17} aria-hidden="true" />{tr(locale,live ? ['Get the app','App holen','Obtenir l’app'] : ['Waitlist','Warteliste','Liste d’attente'])}</button><Link href={isHome ? '#drive' : href(locale,'driver')}><CarFront size={17} aria-hidden="true" />{tr(locale,['Drive','Fahren','Conduire'])}</Link><Link href={isHome ? '#partners' : href(locale,'partners')}><Building2 size={17} aria-hidden="true" />{tr(locale,audienceNames.partner)}</Link></div>}
     {hasBanner && !opened && <aside className="cookie-banner" aria-label={tr(locale,cookieLabel)}>
       <div className="cookie-heading"><Cookie size={17} aria-hidden="true" /><strong>{tr(locale,['Your cookie choices','Deine Cookie-Auswahl','Vos choix de cookies'])}</strong></div>
       <p>{tr(locale,['Essential cookies keep the site working. Optional cookies help us improve it. You choose.','Notwendige Cookies halten die Website am Laufen. Optionale helfen, sie zu verbessern. Du entscheidest.','Les cookies essentiels font fonctionner le site. Les optionnels nous aident à l’améliorer. À vous de choisir.'])}</p>

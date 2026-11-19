@@ -46,7 +46,7 @@ const TRACKERS = Array.from({ length: 25 }, (_, i) => i + 1);
 
 function CyberPhone({ img, className }: { img: string; className: string }) {
   return <div className={`cyber-phone noselect ${className}`} aria-hidden="true" style={{ transform: 'translateY(-25px)' }}>
-    <div className="cyber-trackers">{TRACKERS.map((n) => <span key={n} className={`tr-${n}`} />)}</div>
+    <div className="cyber-trackers">{TRACKERS.map((n) => <span key={n} className={`tr-${n}`} />)}
     <div className="cyber-card">
       <div className="cyber-content">
         <div className="cyber-glare" />
@@ -59,9 +59,9 @@ function CyberPhone({ img, className }: { img: string; className: string }) {
         <div className="cyber-glow cyber-glow-2" />
         <div className="cyber-glow cyber-glow-3" />
         <div className="cyber-particles"><span /><span /><span /><span /><span /><span /></div>
-        <div className="cyber-corners"><span /><span /><span /><span /></div>
         <div className="cyber-scan" />
       </div>
+    </div>
     </div>
   </div>;
 }

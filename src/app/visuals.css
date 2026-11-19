@@ -102,12 +102,6 @@
 .cyber-particles span:nth-child(4) { --x:-.5; --y:1; top:80%; right:40%; }
 .cyber-particles span:nth-child(5) { --x:1; --y:.5; top:30%; left:60%; }
 .cyber-particles span:nth-child(6) { --x:-1; --y:.5; top:70%; right:60%; }
-.cyber-corners span { position:absolute; z-index:6; width:14px; height:14px; border:2px solid rgba(201,238,85,.3); transition:all .3s ease; }
-.cyber-corners span:nth-child(1) { top:10px; left:10px; border-right:0; border-bottom:0; }
-.cyber-corners span:nth-child(2) { top:10px; right:10px; border-left:0; border-bottom:0; }
-.cyber-corners span:nth-child(3) { bottom:10px; left:10px; border-right:0; border-top:0; }
-.cyber-corners span:nth-child(4) { bottom:10px; right:10px; border-left:0; border-top:0; }
-.cyber-phone:hover .cyber-corners span { border-color:rgba(201,238,85,.8); box-shadow:0 0 10px rgba(148,193,32,.5); }
 .cyber-scan { position:absolute; inset:0; z-index:5; background:linear-gradient(to bottom,transparent,rgba(201,238,85,.1),transparent); transform:translateY(-100%); }
 @media (prefers-reduced-motion:no-preference) { .cyber-phone:hover .cyber-scan { animation:scan-move 2s linear infinite; } }
 @keyframes scan-move { from { transform:translateY(-100%); } to { transform:translateY(100%); } }
@@ -202,3 +196,36 @@
 }
 [data-theme='light'] .brand-on-dark .brand-light { display:none; }
 [data-theme='light'] .brand-on-dark .brand-dark { display:block; }
+
+/* ---- v7: cursor spotlight follows the hovered tracker zone ---- */
+.cyber-card { transition: transform 320ms ease, filter 320ms ease; }
+.cyber-card::after { content:''; position:absolute; inset:0; z-index:5; border-radius:inherit; pointer-events:none; mix-blend-mode:screen; opacity:0; transition:opacity 320ms ease; background:radial-gradient(circle at var(--sx,50%) var(--sy,50%), rgba(201,238,85,.17), rgba(201,238,85,.05) 40%, transparent 64%); }
+.cyber-phone:hover .cyber-card::after { opacity:1; }
+.tr-1:hover ~ .cyber-card { --sx:10%; --sy:10%; }
+.tr-2:hover ~ .cyber-card { --sx:30%; --sy:10%; }
+.tr-3:hover ~ .cyber-card { --sx:50%; --sy:10%; }
+.tr-4:hover ~ .cyber-card { --sx:70%; --sy:10%; }
+.tr-5:hover ~ .cyber-card { --sx:90%; --sy:10%; }
+.tr-6:hover ~ .cyber-card { --sx:10%; --sy:30%; }
+.tr-7:hover ~ .cyber-card { --sx:30%; --sy:30%; }
+.tr-8:hover ~ .cyber-card { --sx:50%; --sy:30%; }
+.tr-9:hover ~ .cyber-card { --sx:70%; --sy:30%; }
+.tr-10:hover ~ .cyber-card { --sx:90%; --sy:30%; }
+.tr-11:hover ~ .cyber-card { --sx:10%; --sy:50%; }
+.tr-12:hover ~ .cyber-card { --sx:30%; --sy:50%; }
+.tr-13:hover ~ .cyber-card { --sx:50%; --sy:50%; }
+.tr-14:hover ~ .cyber-card { --sx:70%; --sy:50%; }
+.tr-15:hover ~ .cyber-card { --sx:90%; --sy:50%; }
+.tr-16:hover ~ .cyber-card { --sx:10%; --sy:70%; }
+.tr-17:hover ~ .cyber-card { --sx:30%; --sy:70%; }
+.tr-18:hover ~ .cyber-card { --sx:50%; --sy:70%; }
+.tr-19:hover ~ .cyber-card { --sx:70%; --sy:70%; }
+.tr-20:hover ~ .cyber-card { --sx:90%; --sy:70%; }
+.tr-21:hover ~ .cyber-card { --sx:10%; --sy:90%; }
+.tr-22:hover ~ .cyber-card { --sx:30%; --sy:90%; }
+.tr-23:hover ~ .cyber-card { --sx:50%; --sy:90%; }
+.tr-24:hover ~ .cyber-card { --sx:70%; --sy:90%; }
+.tr-25:hover ~ .cyber-card { --sx:90%; --sy:90%; }
+@media (prefers-reduced-motion:reduce) { .cyber-trackers span { display:none; } }
+/* v7b: spans must sit above the in-grid card so the hover zones stay hit-testable */
+.cyber-trackers span { position:relative; z-index:2; }

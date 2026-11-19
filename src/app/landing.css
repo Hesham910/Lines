@@ -241,8 +241,8 @@
 /* ---- v4: partner CTA row stays on one line ---- */
 .feature-actions .button { flex:none; white-space:nowrap; }
 @media (min-width:960px) {
-  .partner-feature .feature-actions { flex-wrap:nowrap; }
-  .partner-feature .feature-actions .text-link { white-space:nowrap; }
+  .feature-actions { flex-wrap:nowrap; }
+  .feature-actions .text-link { white-space:nowrap; }
 }
 
 /* ---- v4: FAQ "All questions" under the list ---- */
@@ -250,7 +250,7 @@
 
 /* ---- v4: mobile behaviours ---- */
 @media (max-width:719px) {
-  .stack-slot { position:relative; top:0; }
+  .stack-slot { position:sticky; top:74px; } .stack-slot:nth-child(2) { top:88px; } .stack-slot:nth-child(3) { top:102px; }
   .feature-actions { flex-direction:column; align-items:stretch; gap:9px; }
   .feature-actions .button { width:100%; justify-content:center; }
   .feature-actions .button.secondary,.feature-actions .text-link { width:100%; white-space:nowrap; display:flex; justify-content:center; }

@@ -149,3 +149,5 @@
   .ledger-cell + .ledger-cell { border-left:1px solid var(--line); }
 }
 
+/* ---- v7: dotted dividers between launch cities ---- */
+.ch-links line { stroke:rgba(201,238,85,.34); stroke-width:1.1; stroke-dasharray:2 7; stroke-linecap:round; }
